@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #all strong{color: #f00; display:inline-block;min-width:50px; text-align:center;}
+</style>
+<body>
+<ul id="ul1">
+    <li><input type="button" value="-"/> <strong>0</strong> <input type="button" value="+"/>单价是 <em>5</em>元 共 <span>0 </span>元</li>
+    <li><input type="button" value="-"/> <strong>0</strong> <input type="button" value="+"/>单价是 <em>11.5</em>元 共 <span>0 </span>元</li>
+    <li><input type="button" value="-"/> <strong>0</strong> <input type="button" value="+"/>单价是 <em>14.5</em>元 共 <span>0 </span>元</li>
+</ul>
+<div id="all">总共<strong>--</strong>件，总价是<strong>--</strong>元，其中最贵的商品单价是<strong>--</strong>元</div>
+
+<script>
+    var oUl = document.getElementById('ul1');
+    var aLi = oUl.getElementsByTagName('li');
+    var aLl = document.getElementById('all')
+
+    var oem = oUl.getElementsByTagName('em');
+    var oSpan = oUl.getElementsByTagName('span');
+    var oStrong = oUl.getElementsByTagName('strong');
+    var nums;
+    var anum;
+    var ary=[];
+    var imax;
+    for(var i=0;i<aLi.length;i++){
+        aPrice(aLi[i])
+    }
+    function all(){
+        nums = 0;
+        anum = 0;
+        for(var i = 0; i < aLi.length; i++){
+            nums += parseFloat(oStrong[i].innerHTML) //总数量
+            anum += parseFloat(oSpan[i].innerHTML) //总价格
+
+            if(parseFloat(oStrong[i].innerHTML) > 0){ //计算最贵的是
+                ary[i] = parseFloat(oem[i].innerHTML)
+            } else {
+                ary[i] = 0
+            }
+        }
+        imax = Math.max.apply(this, ary);
+
+
+        aLl.innerHTML = '总共<strong>' + nums + '</strong>件,' + '总价是<strong>' + anum + '</strong>元，' + '其中最贵的是<strong>' + imax + '</strong>元';
+    }
+
+    function aPrice(li){
+        var oStrong = li.getElementsByTagName('strong')[0];
+        var oEm = li.getElementsByTagName('em')[0];
+        var oSpan = li.getElementsByTagName('span')[0];
+        var aInput = li.getElementsByTagName('input');
+
+        var aNum = Number(oStrong.innerHTML);
+        var aRmb = parseFloat(oEm.innerHTML);
+        aInput[0].onclick = function(){
+            aNum--;
+            if(aNum < 0){
+                aNum = 0
+            }
+            oStrong.innerHTML = aNum;
+            oSpan.innerHTML = aNum * aRmb;
+            all()
+        }
+        aInput[1].onclick = function(){
+            aNum++;
+            oStrong.innerHTML = aNum;
+            oSpan.innerHTML = aNum * aRmb;
+            all()
+        }
+    }
+
+</script>
+</body>
+</html>

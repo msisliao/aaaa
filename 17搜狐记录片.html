@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    ul{margin:0;padding:0;}
+    .tab-nav li{ display:inline-block;list-style:none; background-color:#eee;padding:5px;}
+    .tab-con{border:1px solid #ddd;}
+    .dn{ display:none;}
+
+    .tab-con li{ padding:10px 5px;list-style:none;background-color:#f5f5f5;border-bottom:1px dashed #ddd;}
+    .tab-con li span{ display:inline-block; margin-right:10px;}
+    .tab-con li span:first-child{ background-color:#aaa;width:30px; text-align:center;}
+    .tab-con li.hover span:last-child{height:40px; background-color:#fff;width:90%;padding:10px;}
+    .tab-con li.hover span:first-child{ background-color:#00c0a5; border-radius:4px;}
+</style>
+<body>
+<ul class="tab-nav" id="nav">
+
+</ul>
+<div class="tab-con" id="tabCon">
+<!--
+        <ul id="list">
+        </ul>
+-->
+</div>
+
+<script>
+    var oNav = document.getElementById('nav');
+    var aLi = oNav.getElementsByTagName('li');
+
+    var oTab = document.getElementById('tabCon');
+    var oLi = oTab.getElementsByTagName('li');
+   // var oUl = document.getElementById('list');
+    //var oUli = oUl.getElementsByTagName('li');
+
+    var aryN = ['标题1','标题2','标题2','标题233']
+    var aryT = [
+        ['我是标题1', '我是标题11', '我是标题12', '我是标题13', '我是标题14'],
+        ['我是标题122221', '我是标题12222223', '我是标题12222224', '我是标题12225'],
+        ['我是标题1234', '我是标题12345'],
+        ['我是标题122221',  '我是标题12222224', '我是标题12225']
+    ]
+    var snav='',scon='';
+    for(var i in aryN){
+        snav+="<li>"+aryN[i]+"</li>"
+        scon+="<ul></ul>"
+    }
+    oNav.innerHTML = snav;
+    oTab.innerHTML = scon;
+
+
+    var oconUl = oTab.getElementsByTagName('ul');
+
+
+/*
+    var str = '';
+    var str2 = '';
+    var str3 = '';
+    for(k =0; k<aryT[0].length;k++){
+        str += "<li><span>"+(1+k)+"</span><span>"+aryT[0][k]+"</span></li>"
+    }
+    for(k =0; k<aryT[1].length;k++){
+        str2 += "<li><span>"+(1+k)+"</span><span>"+aryT[1][k]+"</span></li>"
+    }
+    for(k =0; k<aryT[2].length;k++){
+        str3 += "<li><span>"+(1+k)+"</span><span>"+aryT[2][k]+"</span></li>"
+    }
+    oconUl[0].innerHTML = str;
+    oconUl[1].innerHTML = str2;
+    oconUl[2].innerHTML = str3;
+*/
+
+    for(var i=0; i<aryT.length;i++){
+        //oconUl[i].innerHTML = '<li>'+aryT[i]+'</li>'
+    }
+
+
+//遍历数组生成对应的li  第一组放第一组的数据....
+
+    for(var i=0;i<aryT.length;i++){
+        for(var k=0; k<aryT[i].length;k++){
+            oconUl[i].innerHTML += "<li><span>"+(1+k)+"</span><span>"+aryT[i][k]+"</span></li>";
+        }
+    }
+
+
+
+for(var i=0; i<aLi.length;i++){ //aLi是tab的个数
+    aLi[i].index = i;
+    oconUl[i].style.display = "none" //默认时的隐藏
+    aLi[i].style.color = "";
+    /*该显示的显示 隐藏的隐藏*/
+    aLi[i].onclick = function(){ //点击tabNav时显示相应的Ul
+        for(var i=0; i<aryT.length;i++){
+            aLi[i].style.color = "";
+            oconUl[i].style.display = "none"  //点击的时候其它的隐藏
+        }
+        this.style.color = "#f00";
+        oconUl[this.index].style.display = "block"
+    }
+
+}
+    aLi[0].style.color = "#f00";//默认第一个显示的颜色
+    oconUl[0].style.display = "block"; //默认第一个显示
+
+    //console.log(aLi)
+    for(var i=0; i<oLi.length;i++){ //所有的li鼠标放上去的效果
+        oLi.index = i;
+        oLi[i].onmouseenter = function(){
+            for(var i=0; i<oLi.length;i++){
+                oLi[i].className = '';
+            };
+            this.className = "hover"
+        }
+    }
+
+</script>
+</body>
+</html>

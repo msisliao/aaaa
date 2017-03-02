@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    ul{list-style:none;}
+    #div1{width:400px;height: 400px; overflow:hidden; position:relative;margin:100px;}
+    ul{white-space:nowrap;height: 400px; position:absolute;left:0;top:0;}
+    #div1 li{width:400px; float:left; position:relative;}
+    #div1 li p{ position:absolute;left:0; background-color:#aaa;bottom:-50px;width:100%;}
+    img{width:400px;height: 400px;}
+</style>
+<body>
+<div id="div1">
+    <ul>
+        <li>
+            <img src="img/1.jpg" alt="">
+            <p>图片标题</p>
+        </li>
+        <li>
+            <img src="img/2.jpg" alt="">
+            <p>图片标题</p>
+        </li>
+        <li>
+            <img src="img/3.jpg" alt="">
+            <p>图片标题</p>
+        </li>
+        <li>
+            <img src="img/4.jpg" alt="">
+            <p>图片标题</p>
+        </li>
+    </ul>
+</div>
+<script>
+    function getStyle(obj,attr){
+        return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+    }
+    function doMove(ele,attr,dir,target,endFn){
+        dir = parseInt(getStyle(ele,attr)) < target ? dir : -dir;
+        clearInterval(ele.timer);
+        ele.timer = setInterval(function(){
+            var speed = parseInt(getStyle(ele,attr))+dir; //向前走的部数 开始的加上要走的dir
+            if(speed>target && dir>0 || speed < target && dir<0){ //大于目标点 dir是正数  或者小于目标点dir是负数 都要停止运动
+                speed = target
+            }
+            ele.style[attr] = speed + "px";
+
+            if(speed == target){
+                clearInterval(ele.timer);
+                endFn && endFn();
+            }
+        },30)
+    }
+
+    var num = 0;
+    var times = null;
+    var oDiv = document.getElementById('div1');
+    var oUl = oDiv.getElementsByTagName('ul')[0];
+    var aLi = document.getElementsByTagName('li');
+    var aliW = parseInt(getStyle(aLi[num],'width'));
+    var aP = document.getElementsByTagName('p');
+    var oUlw = aLi.length *aliW;
+    oUl.style.color = "red";
+    oUl.style.width = oUlw +'px';
+
+
+    function picFn(){
+        doMove(aP[0], 'bottom', 20, 4)//初始化标题显示
+        clearInterval(times);
+        times = setInterval(function(){
+            num ++;
+            if(num == aLi.length){
+                num = 0
+            }
+            doMove(aP[num], 'bottom', 20, -50, function(){
+                doMove(oUl, 'left', 40, -num * aliW, function(){
+                    doMove(aP[num], 'bottom', 20, 4, function(){
+                        doMove(oUl, 'left', 40, -num * aliW)
+                    })
+                })
+            });
+        }, 3000)
+    }
+    picFn()
+
+</script>
+</body>
+</html>

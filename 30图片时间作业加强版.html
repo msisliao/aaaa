@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>123</title>
+    <style>
+        div{margin:0 auto;padding:0;position:relative;}
+        li{list-style:none;float:left;width:122px;height:172px;position:relative;overflow:hidden;}
+        img{position:absolute;top:0px;}
+    </style>
+    <script>
+        window.onload = function () {
+            var timer;
+            var arr=[];
+            var arrImg=['0.JPG','1.JPG','2.JPG','3.JPG','4.JPG','5.JPG','6.JPG','7.JPG','8.JPG','9.JPG'];
+            var myDate=new Date;
+            //第3和6个li用#占位
+            var strOld=toTwo(myDate.getHours())+'#'+toTwo(myDate.getMinutes())+'#'+toTwo(myDate.getSeconds());
+            clearInterval(timer);
+            timer=setInterval(function(){
+                var newDate=new Date();
+                var strNew=toTwo(newDate.getHours())+'#'+toTwo(newDate.getMinutes())+'#'+toTwo(newDate.getSeconds());
+                var aLi=document.getElementsByTagName('li');
+                for(var i=0;i<aLi.length;i++){
+                    aImg0=aLi[i].getElementsByTagName('img')[0];
+                    aImg1=aLi[i].getElementsByTagName('img')[1];
+                    aImg0.style.top='0px';//初始化图片位置
+                    aImg1.style.top='172px';
+                    //获取正确时间对应的图片，第一个img用最先获取的时间，第二个用最新的时间  占位符位置每隔700毫秒进行滑动一次
+                    if(i!=2&&i!=5){
+                        aImg0.src='img/'+arrImg[strOld.charAt(i)];
+                        aImg1.src='img/'+arrImg[strNew.charAt(i)];
+                    }else{
+                        doMove(aImg0,'top',172,-172,700);
+                        doMove(aImg1,'top',172,0,700);
+                    }
+
+                }
+                var arr1=fn(strOld,strNew);
+                console.log(arr)
+                //数字变化的li进行doMove函数滑动
+                for(var i=0;i<arr1.length;i++){
+                    var aImg=aLi[arr1[i]].getElementsByTagName('img');
+                    doMove(aImg[0],'top',23,-172,30);
+                    doMove(aImg[1],'top',23,0,30);
+                }
+                strOld=strNew;
+            },1000);
+            //每隔1秒把变化的数字的角标存入arr数组中
+            function fn(str1,str2){
+                var arr=[];
+                for(var i=0;i<str1.length;i++){
+                    if(str1.charAt(i)!=str2.charAt(i)){
+                        arr.push(i);
+                    }
+                }
+                return arr;
+            }
+            //15：03：18
+            function toTwo(n){
+                return n<10?'0'+n:''+n;
+            }
+            //doMove方法
+            function doMove(obj,order,dir,target,t,endFn){
+                dir=parseInt(getStyle(obj,order))<target?dir:-dir;//用户直接输入正数即可
+                clearInterval(obj.timer);
+                obj.timer=setInterval(function(){
+                    var speed=parseInt(getStyle(obj,order))+dir;
+                    if(speed>target&&dir>0||speed<target&&dir<0){
+                        speed=target;
+                    }
+                    obj.style[order]=speed+'px';
+                    if(speed==target){
+                        clearInterval(obj.timer);
+                        //定时器清除后确认是否有回调函数
+                        endFn&&endFn();
+                    }
+                },t);
+            }
+            //获取div位置
+            function getStyle(obj,attr){return obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj)[attr]};
+        };
+    </script>
+</head>
+<body>
+<ul>
+    <li><img src="img/0.JPG"/><img src="img/0.JPG"/></li>
+    <li><img src="img/0.JPG"/><img src="img/0.JPG"/></li>
+    <li><img src="img/colon.JPG"/><img src="img/colonnul.JPG"/></li>
+    <li><img src="img/0.JPG"/><img src="img/0.JPG"/></li>
+    <li><img src="img/0.JPG"/><img src="img/0.JPG"/></li>
+    <li><img src="img/colon.JPG"/><img src="img/colonnul.JPG"/></li>
+    <li><img src="img/0.JPG"/><img src="img/0.JPG"/></li>
+    <li><img src="img/0.JPG"/><img src="img/0.JPG"/></li>
+</ul>
+
+</body>
+</html>

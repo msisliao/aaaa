@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    body{ font-size:12px;}
+    input{margin:15px;padding:5px;}
+    ul{ position:relative;}
+    li{list-style:none; display:inline-block;width:50px;height: 50px; background-color:#f00;color:#fff; text-align:center; line-height:50px;margin:5px; position:absolute;}
+    div{
+        width:50px;
+        height:50px;
+        border:1px solid black;
+        font-size:20px;
+        font-weight:bold;
+        text-align:center;
+        line-height:50px;
+        position:absolute;
+        left:0px;
+        top:0px;
+    }
+
+</style>
+<body>
+<input type="button" id="btn1" value="自动生成10个li"/>
+<ul id="ul1">
+</ul>
+<script>
+    window.onload = function(){
+        var oBtn1 = document.getElementById('btn1');
+        var oUl = document.getElementById("ul1");
+        var ali = oUl.getElementsByTagName("li");
+        var arry = ["red","green","blue","yellow"]
+        var num = 100;
+        var nums = 10;//行个数
+        var nump = Math.ceil(num/nums); //行数 向上取整
+
+        var str = "";
+        for(var q =0; q<num;q++){
+           str+="<li>"+(q+1)+"</li>"
+        }
+        var flag = true;
+        oBtn1.onclick = function(){
+            if(flag){
+                oUl.innerHTML = str;
+                flag = false;
+            } //阻止重复生成
+            for(var i=0; i<nump;i++){//行数
+                for(var k=i*nums;k<(i+1)*nums;k++){ //每行的个数
+                    ali[k].style.background = arry[k%4];
+                    ali[k].style.left = (k%nums)*60+"px";//行个数的left 每排10个的left
+                    ali[k].style.top = i*60+"px"; //行数的高 第1行 第2行
+                }
+            };
+        }
+    }
+</script>
+</body>
+</html>

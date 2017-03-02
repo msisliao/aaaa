@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>无标题文档</title>
+</head>
+
+<body>
+
+请输入QQ号码：<input type="text" />
+<input type="button" value="判断" />
+
+
+<br />
+1、有没有输入<br />
+2、输入的是不是数字<br />
+3、不能有0在前面<br />
+4、不能是小数<br />
+5、输入的数字必须在5位以上、10位以内<br />
+
+
+<script>
+    var aInput = document.getElementsByTagName('input');
+    var str = '';
+    var len = ''
+    aInput[1].onclick = function(){
+        str = aInput[0].value;
+        len =str.length;
+        if(str== ""){
+            alert("不能为空")
+        }else if(isNaN(str) || aInput[0].value.charAt(0) == "-" || aInput[0].value.charAt(0) == "+"){
+            alert("您输入的不是有效数字")
+        }else if(parseFloat(str) != parseInt(str)){
+            alert("不能输入小数")
+        }else if(aInput[0].value.charAt(0) == "0"){
+            alert("不能以0开头")
+        }else if(len<5 || len>10){
+            alert("输入的必须是5-10位数字")
+        }else {
+            alert("输入正常")
+        }
+    }
+</script>
+</body>
+</html>

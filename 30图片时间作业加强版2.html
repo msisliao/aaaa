@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #imas{height:172px; overflow:hidden; position:relative;}
+    #imas span{ float:left; position:relative;width:125px;height: 172px;}
+    #imas span img{ display:block; position:absolute;top:0;}
+</style>
+<body>
+<p id="time"></p>
+<div id="imas">
+   <span class="t1">
+      <img src="img/1.JPG" width="122" height="172" alt="">
+       <img src="img/0.JPG" alt="">
+   </span>
+   <span class="t1">
+       <img src="img/2.JPG" alt="">
+       <img src="img/0.JPG" alt="">
+   </span>
+    <span class="dot">
+        <img src="img/colon.JPG" alt="">
+    </span>
+   <span class="t1">
+       <img src="img/3.JPG" alt="">
+       <img src="img/0.JPG" alt="">
+   </span>
+   <span class="t1">
+       <img src="img/4.JPG" alt="">
+      <img src="img/0.JPG" alt="">
+   </span>
+   <span class="dot">
+        <img src="img/colon.JPG" alt="">
+    </span>
+   <span class="t1">
+       <img src="img/5.JPG" alt="">
+       <img src="img/0.JPG" alt=""><
+   </span>
+   <span class="t1">
+       <img src="img/6.JPG" alt="">
+       <img src="img/0.JPG" alt="">
+   </span>
+</div>
+
+<script>
+    //补0
+    function toTwo(n){return n < 10 ? '0' + n : '' + n; }
+    /*运动的函数  attr ->top left..方向  dir速度 控制的方向 正负就是相反的方向 +-20 target--到达的目标*/
+    function doMove(ele, attr, dir, target, endFn){ //attr属性值left/top/buttom dir正负值相反方向  target目标
+        dir = parseInt(getStyle(ele, attr)) < target ? dir : -dir; //目标值大于当前是正的 小于时是负的
+        clearInterval(ele.timer)
+        ele.timer = setInterval(function(){
+            var speed = parseInt(getStyle(ele, attr)) + dir; //每隔30秒left的偏移
+            if(speed > target && dir > 0 || speed < target && dir < 0){
+                //正数时往前跑  负数时往回跑  所以可以利用dir进一步判断
+                speed = target
+            }
+            ele.style[attr] = speed + "px";
+            if(speed == target){
+                clearInterval(ele.timer)
+                //有回调函数时执行
+                endFn && endFn();
+            }
+        }, 30)
+    }
+    //获取元素位置
+    function getStyle(obj,attr){
+        return obj.currentStyle ? obj.currentStyle[attr] :getComputedStyle(obj)[attr];
+    }
+    /*把字符串中不一样的数字的角标(位置)存入到数组  为了知道哪个数字变化需要做运动处理*/
+    function changeNum(str,str1){
+        var arr = [];
+        for(var i=0;i<str1.length;i++){
+            if(str.charAt(i) != str1.charAt(i)){
+                arr.push(i)
+            }
+        }
+        return arr
+    }
+    //console.log(changeNum('123','134')) //输出 [1,2]
+
+    //1秒之前的时间  setInterval--是当前时间
+    var oldDate = new Date();
+    var oldStr = toTwo(oldDate.getHours()) + toTwo(oldDate.getMinutes()) + toTwo(oldDate.getSeconds());
+
+
+    var at = document.getElementsByClassName('t1');//获取需要除了标点符号外的数字
+    var dotS = document.getElementsByClassName('dot');//获取标点符号
+    var timeBOx = document.getElementById('time');
+    function date(){
+        var oDate = new Date();
+        var str =  toTwo(oDate.getHours()) + toTwo(oDate.getMinutes()) + toTwo(oDate.getSeconds()) ;
+        timeBOx.innerHTML = str;
+
+        var em0=[],em1=[];
+        for(var i=0;i<at.length;i++){
+            em0.push(at[i].getElementsByTagName('img')[0]);//获取第一排的第0个
+            em1.push(at[i].getElementsByTagName('img')[1]);//获取第一排的第1个
+        }
+        for(var i=0;i<em0.length;i++){
+            em0[i].style.top = '0px';//默认的top值
+            em1[i].style.top = '172px';//默认的top值
+            em0[i].src = 'img/'+oldStr.charAt(i)+'.JPG';
+            em1[i].src = 'img/'+str.charAt(i)+'.JPG';
+        }
+        var arr1 = changeNum(oldStr,str);
+        for(var e=0;e<arr1.length;e++){
+            var aimgs = at[arr1[e]].getElementsByTagName('img');
+            doMove(aimgs[0],'top',23,-172);//把看到的拉到下面去
+            doMove(aimgs[1],'top',23,0);//把隐藏的拉上来
+        };
+
+
+        for(var t = 0; t < dotS.length; t++){
+            if(dotS[t].style.visibility == "visible"){
+                dotS[t].style.visibility = 'hidden';
+            } else {
+                dotS[t].style.visibility = 'visible';
+            }
+        }
+
+
+        oldStr = str;
+       // console.log(oldstr,str)//如果没有定时器 他们是相等的 开始了定时器后 str会一直在变化  而oldstr是1秒后才会等于当前str
+    }
+
+   date()
+    setInterval(function(){
+       date();
+    }, 1000)
+</script>
+</body>
+</html>

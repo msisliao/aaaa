@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+ ul{list-style:none;margin:200px;width:600px;}
+    li{ position:relative;width:100px;height: 100px; line-height:100px; text-align:center; background-color:#eee; float:left;margin:10px;}
+    li div{ position:absolute;width:200px;height: 100px;top:-80px; background-color:#f00; border-radius:4px; display:none;z-index:2}
+</style>
+<body>
+<ul id="ul1">
+    <li>1 <div>fff</div> </li>
+    <li>2 <div>fff</div> </li>
+    <li>3 <div>fff</div> </li>
+    <li>4 <div>fff</div> </li>
+    <li>5 <div>fff</div> </li>
+    <li>6 <div>fff</div> </li>
+    <li>7 <div>fff</div> </li>
+    <li>8 <div>fff</div> </li>
+    <li>9 <div>fff</div> </li>
+    <li>10 <div>fff</div> </li>
+</ul>
+<script>
+    var oUl = document.getElementById("ul1");
+    var aLi = oUl.getElementsByTagName("li");
+    var that = null;
+    for(var i=0;i<aLi.length;i++){
+        aLi[i].onmouseover=function(){
+            that = this; //用that做中间的桥梁
+            show();
+        }
+        aLi[i].onmouseout=function(){
+            this.getElementsByTagName("div")[0].style.display = "none"
+        }
+    }
+
+    function show(){
+        that.getElementsByTagName("div")[0].style.display = "block"
+    }
+</script>
+</body>
+</html>

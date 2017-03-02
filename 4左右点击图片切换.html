@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    li{list-style:none;}
+    #oImg{ width:400px;height: 400px;color:#fff; text-align:center;}
+    #box{width:400px;height: 440px; padding:10px;background-color:#000; position:relative;margin:30px;}
+    #tit{color:#fff; font-size:14px; text-align:center;height: 30px; line-height:30px; background-color:#999;}
+    #title{ background-color:#888;height: 30px; line-height:30px; position:absolute;width:400px;bottom:10px;}
+    #left,#right{ position:absolute;width:40px;height: 40px; text-align:center; line-height:40px;left:0;top:50%; background-color:#666; cursor:pointer;}
+    #right{ left:auto;right:0;top:50%;}
+</style>
+<body>
+<input type="button" id="btn1" value="单次轮播"/>
+<input type="button" id="btn2" value="循环轮播"/>
+<div id="box">
+    <p id="tit">加载中~~</p>
+    <ul>
+        <li id="imgS">图片加载中~~~  </li>
+    </ul>
+    <p id="title">标题加载中~~</p>
+    <span id="left">←</span>
+    <span id="right">→</span>
+</div>
+<script>
+    var oImg = document.getElementById("imgS");
+    var oTit = document.getElementById("tit");
+    var oTitle = document.getElementById("title");
+    var oPrev = document.getElementById("left");
+    var oNext = document.getElementById("right");
+    var oBtn1 = document.getElementById("btn1");
+    var oBtn2 = document.getElementById("btn2");
+
+    var arry = ["../img/1.jpg","../img/2.jpg","../img/3.jpg","../img/4.jpg","../img/5.jpg"]
+    var arryT = ["我是111","我是22222","我是3333333","我是44444444","我是55555555555"];
+
+    var num = 0;
+    function oChange(){
+        oTit.innerHTML = num+1 +"/" +arry.length;
+        oImg.innerHTML = "<img src="+arry[num]+" alt=\"\">";
+        oTitle.innerHTML = arryT[num];
+    }
+    oChange();//初始化
+    tabs();//默认是循环播放
+
+    function tabs(){
+        oPrev.onclick = function(){
+            prev(arry.length-1);
+            oChange();
+        }
+        oNext.onclick = function(){
+            next(0);
+            oChange();
+        }
+    }
+    //单次循环
+    oBtn1.onclick = function(){
+        oPrev.onclick = function(){
+            prev(0);
+            oChange();
+        }
+        oNext.onclick = function(){
+            next(arry.length-1);
+            oChange();
+        }
+    }
+    //循环播放
+    oBtn2.onclick = function(){
+        tabs()
+    }
+//下一张
+    function next(ev){
+        num++;
+        if(num == arry.length){
+            num = ev;
+            if(ev == arry.length - 1){
+                alert("已经是最后一张了")
+            }
+        }
+    }
+    //上一张
+    function prev(ev){
+        num--;
+        if(num == -1){
+            num = ev;
+            if(ev == 0){
+                alert("已经是第一张了")
+            }
+        }
+    }
+</script>
+</body>
+</html>

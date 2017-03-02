@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动生成100个li换行</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    body{ font-size:12px;}
+    input{margin:15px;padding:5px;}
+    ul{ position:relative;}
+    li{list-style:none; display:inline-block;width:50px;height: 50px; background-color:#f00;color:#fff; text-align:center; line-height:50px;margin:5px; position:absolute;}
+</style>
+<body>
+<input type="button" id="btn" value="自动生成10个li"/>
+<ul id="ul1">
+</ul>
+<script>
+    var oUl = document.getElementById("ul1");
+    var aLi = document.getElementsByTagName("li");
+    var oBtn = document.getElementById("btn");
+
+    var str = ''; //把要生成的内容放在一个空的字符串里面
+    for(var i = 0; i < 10; i++){
+        str += "<li>" + (i + 1) + "</li>";
+    }
+    oBtn.onclick = function(){
+        oUl.innerHTML = str; //最后oul的内容等于这个字符串 就不用循环一次生成一次 要1000次
+        var bg = ["red", "green", "blue", "yellow"]
+        for(var k = 0; k < aLi.length; k++){
+            aLi[k].style.left = k * 60 + "px"
+            aLi[k].style.background = bg[k % 4]
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    body{ line-height:30px;}
+    ul{list-style:none;}
+    #list{width:300px;border:1px solid #ddd;margin:100px;}
+    #list>li{ border-bottom:1px solid #fff;;}
+    h3{ background-color:#00c0a5; font-weight:bold;padding-left:10px;}
+    .active{ background-color:#1c90f2;}
+    #list>li li{ padding-left:20px; border-bottom:1px solid #ddd;}
+    #list>li ul{ display:none;}
+    .cur{ background-color:#e5e5e5;;}
+</style>
+<body>
+<ul id="list">
+    <li>
+        <h3>我的好友</h3>
+        <ul>
+            <li>某人</li>
+            <li>某人</li>
+            <li>某人</li>
+        </ul>
+    </li>
+    <li>
+        <h3>我的好友</h3>
+        <ul>
+            <li>某人</li>
+            <li>某人</li>
+            <li>某人</li>
+        </ul>
+    </li>
+</ul>
+<script>
+    var oList = document.getElementById("list");
+    var oH3 = oList.getElementsByTagName("h3");
+    var oUl = oList.getElementsByTagName("ul");
+    var aLi = null;
+    var ary = [];
+    //代替for循环清空上一个 当前变化
+var ah3 = oH3[0];
+var aul = oUl[0]
+
+    for(var i = 0; i < oH3.length; i++){
+        oH3[i].index = i;
+        oH3[i].onclick = function(){
+            //qq列表3的变化 点击一组让其它组隐藏
+/*
+            for(var i=0;i<oUl.length;i++){
+                oUl[i].style.display = "none";
+                oH3[i].className = "";
+            }
+*/
+            aul.style.display = "none";
+            ah3.className = "";
+            ah3 = this;
+            aul = oUl[this.index]; //代替for循环 让点击是ah3变成当前 aul变成当前
+
+            this.className = "active";
+            oUl[this.index].style.display = "block";
+        }
+    }
+
+    //以下是为单个li点击时当前高亮 清空其它的
+
+    //给好友加点击事件 1、找到所有好友 并存在ary里
+    for(var i = 0; i < oUl.length; i++){
+        aLi = oUl[i].getElementsByTagName("li"); //找到了ul下的li
+        for(var j = 0; j < aLi.length; j++){ //循环所有li 用数组存起来
+            ary.push(aLi[j])
+        }
+    }
+    //for套for 有函数时可以用一个变量i 没有函数隔开时需要用不同的变量
+    //2.循环所有好友 并加上点击事件
+    for(var i = 0; i < ary.length; i++){
+        ary[i].onclick = function(){
+            for(var i = 0; i < ary.length; i++){
+                ary[i].className = ""
+            }
+            this.className = "cur";
+        }
+    }
+</script>
+</body>
+</html>

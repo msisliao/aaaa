@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>为div设置样式</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    body{ line-height:2;}
+    li{list-style:none;}
+#setting{width:110px;height:30px; font-size:14px; line-height:30px; display:inline-block; background-color:red;color:#fff; text-align:center;}
+#box{ width:300px;height: 300px; background-color:red;}
+
+    .setbox{ background:rgba(0,0,0,.4);padding:15px;width:300px; position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1; display:none;}
+    .box{ background-color:#fff;padding:10px; font-size:13px;}
+    .box span:not(:first-child){ display:inline-block;border:1px solid #ddd;margin:5px;padding:0 10px; cursor:pointer;}
+    .box span:not(:first-child):hover{ background-color:#ddd;}
+    .btnbox{ text-align:center;}
+    .btnbox input{width:100px;height:30px;border:none;margin:20px 10px 0; background-color:#00c0a5;}
+    .bg{ background:rgba(0,0,0,.4); position:fixed;top:0;left:0;right:0;bottom:0; display:none;}
+</style>
+<script>
+    window.onload = function(){
+        var oSet = document.querySelector("#setting");
+        var oSetBox = document.querySelector(".setbox");
+        var oBox = document.querySelector("#box");
+        var oBg = document.querySelector(".bg");
+        var oK = document.querySelector("#ok");
+        var reset = document.querySelector("#reset");
+
+        oSet.onclick = function(){
+            oSetBox.style.display = "block";
+            oBg.style.display = "block";
+
+            var green = document.querySelector(".green");
+            var yellow = document.querySelector(".yellow");
+            var black = document.querySelector(".black");
+
+            var w1 = document.querySelector(".w1");
+            var w2 = document.querySelector(".w2");
+            var w3 = document.querySelector(".w3");
+
+            var h1 = document.querySelector(".h1");
+            var h2 = document.querySelector(".h2");
+            var h3 = document.querySelector(".h3");
+
+            green.onclick = function(){
+                oBox.style.background = "#2f0"
+            }
+            yellow.onclick = function(){
+                oBox.style.background = "yellow"
+            }
+            black.onclick = function(){
+                oBox.style.background = "black"
+            }
+
+            w1.onclick = function(){
+                oBox.style.width = "100px";
+            }
+            w2.onclick = function(){
+                oBox.style.width = "300px";
+            }
+            w3.onclick = function(){
+                oBox.style.width = "400px";
+            }
+
+            h1.onclick = function(){
+                oBox.style.height = "100px";
+            }
+            h2.onclick = function(){
+                oBox.style.height = "300px";
+            }
+            h3.onclick = function(){
+                oBox.style.height = "400px";
+            }
+
+
+            oK.onclick = function(){
+                oSetBox.style.display = "none";
+                oBg.style.display = "none";
+            }
+
+            reset.onclick = function(){
+                oBox.setAttribute("style","")
+            }
+        }
+
+    }
+</script>
+<body>
+<h3>请为下面的div设置样式：<span id="setting">点击设置</span></h3>
+<div id="box"></div>
+<!--弹出的层-->
+<div class="setbox">
+    <div class="box">
+        <ul>
+            <li><span>请选择颜色：</span><span class="green">绿色</span><span class="yellow">黄色</span><span class="black">黑色</span>
+            </li>
+            <li><span>请选择宽度：</span><span class="w1">100</span><span class="w2">300</span><span class="w3">400</span></li>
+            <li><span>请选择高度：</span><span class="h1">100</span><span class="h2">300</span><span class="h3">400</span></li>
+        </ul>
+        <div class="btnbox"><input type="reset" id="reset" value="恢复"/><input type="button" id="ok" value="确定"/></div>
+
+    </div>
+</div>
+<div class="bg"></div>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{ margin:0; padding:0;}
+    .main{ background-color:#eee;width:510px;}
+    li{list-style: none;}
+    #nav{ float:left; background-color:#eee;width:100px;height:400px;padding:3px; text-align:center;}
+    #nav li{height:40px; background-color:#aaa; margin-bottom:1px; line-height:40px;}
+    #box{ display:inline-block;width:400px;}
+    #box img{ vertical-align:top;}
+    .lis1 ul{height:30px;}
+    .lis1{ display:none;}
+    .lis1 li{ float:left;height: 30px; background-color:#aaa; margin-right:1px;}
+    .imgbox{ display:block; text-align:center; line-height:400px;}
+    #nav li.cur,.lis1 li.cur{ background-color:#f00;}
+</style>
+<body>
+<div class="main">
+    <ul id="nav">
+    </ul>
+    <div id="box">
+    </div>
+</div>
+<script>
+    var oTabNav = document.getElementById('nav');
+    var aLi = oTabNav.getElementsByTagName('li');
+    var OTabCon = document.getElementById('box');
+    var OTabConUl = OTabCon.getElementsByTagName('ul')
+    var aList1 = document.getElementsByClassName('lis1');
+    var oimgbox = document.getElementsByClassName('imgbox');
+    var rfLis = document.getElementsByClassName('lis1');
+
+    var aryImg = [
+        ["../img/1.jpg","../img/2.jpg","../img/3.jpg"],
+        ["../img/2.jpg","../img/1.jpg"],
+        ["../img/3.jpg","../img/4.jpg","../img/1.jpg"],
+        ["../img/5.jpg","../img/1.jpg","../img/2.jpg","../img/3.jpg"]
+    ]
+    var aryT = ["分组1","分组2","分组3","分组4"];
+
+
+
+
+
+    for(var i=0;i<aryImg.length;i++){
+        oTabNav.innerHTML+="<li>"+aryT[i]+"</li>"; //左边的导航是分组的个数
+        OTabCon.innerHTML+="<div class='lis1'><div class='imgbox'>加载中...</div><ul></ul></div>";//有多少组导航就有多少组右边的大图
+        oimgbox[i].innerHTML="<img src='"+aryImg[i][0]+"'>"  //初始化每组图片的第一张图
+        for(var k=0;k<aryImg[i].length;k++){
+            OTabConUl[i].innerHTML+="<li></li>";//"+aryImg[i][k]+"  //右边每组有多少图片需要展示
+        }
+       //
+    }
+
+
+    //左边点击对应的显示
+    for(var i=0;i<aLi.length;i++){
+        aLi[i].index = i;
+        aLi[i].onclick = function(){
+            for(var i=0;i<aLi.length;i++){
+                aLi[i].className = "";
+                aList1[i].style.display = "none"
+            }
+            this.className = "cur";
+            aList1[this.index].style.display = "block"
+        }
+    }
+/*
+    for(var i=0;i<rfLi.length;i++){
+        rfLi[i].index = i;
+        rfLi[i].onclick = function(){
+            for(var i=0;i<rfLi.length;i++){
+                rfLi[i].className='';
+            }
+            this.className = 'cur'
+            oimgbox[0].innerHTML="<img src='"+aryImg[0][this.index]+"'>"
+        }
+    }
+*/
+/*
+    for(var i=0;i<rfLi1.length;i++){
+        rfLi1[i].index = i;
+        rfLi1[i].onclick = function(){
+            for(var i=0;i<rfLi1.length;i++){
+                rfLi1[i].className='';
+            }
+            this.className = 'cur'
+            oimgbox[1].innerHTML="<img src='"+aryImg[1][this.index]+"'>"
+        }
+    }
+*/
+//右边的切换用函数包起来
+    function rfTab(cur,len){
+        for(var i=0;i<cur.length;i++){
+            cur[i].index = i;
+            cur[i].onmouseover = function(){
+                for(var i=0;i<cur.length;i++){
+                    cur[i].className='';
+                }
+                this.className = 'cur'
+                oimgbox[len].innerHTML="<img src='"+aryImg[len][this.index]+"'>"
+            }
+        }
+    }
+/*
+    var rfLi = document.getElementsByClassName('lis1')[0].getElementsByTagName('li');
+    var rfLi1 = document.getElementsByClassName('lis1')[1].getElementsByTagName('li');
+    var rfLi2 = document.getElementsByClassName('lis1')[2].getElementsByTagName('li');
+    /!*右边的点击事件*!/
+    rfTab(rfLi,0)
+    rfTab(rfLi1,1)
+    rfTab(rfLi2,2)
+*/
+    //循环以上的 简洁化 把所有的li存起来
+    var arys = []
+    for(var i = 0; i < rfLis.length; i++){
+        arys[i] = rfLis[i].getElementsByTagName('li');
+    }
+    for(var i = 0; i < arys.length; i++){
+        for(var r = 0; r < arys[i].length; r++){
+            arys[i][0].className = "cur" //让每一组的图片第一个当前背景为cur
+            arys[i][r].style.width = parseFloat(400/arys[i].length)-1+'px'; //右边的li宽度平均分 400/每组的个数
+           // arys[1][r].style.width = parseFloat(400/2)-1+'px';
+        }
+        rfTab(arys[i], i) //右边每组图片的切换
+    }
+
+
+
+
+    //默认第一个显示
+    //aLi[0].className = rfLi[0].className = rfLi1[0].className = rfLi2[0].className = "cur"
+    aList1[0].style.display = "block"
+    aLi[0].className = "cur"
+
+
+</script>
+</body>
+</html>

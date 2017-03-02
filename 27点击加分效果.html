@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    ul{list-style:none;}
+    #div1{width:600px;height: 50px; line-height:50px; position:relative; margin-top:300px; margin-left:50px;border:1px solid #10af80;}
+    #bg{ width:0;background-color:#10af80; display:block;height: 50px; position:absolute;left:0;}
+    li{ position:absolute;width:60px;height: 50px; text-align:center; font-size:18px;}
+</style>
+<body>
+<div id="div1">
+    <span id="bg"></span>
+    <ul>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+        <li>+1</li>
+    </ul>
+</div>
+<script>
+    /*运动的函数  attr ->top left..方向  dir速度 控制的方向 正负就是相反的方向 +-20 target--到达的目标*/
+    function doMove(ele, attr, dir, target, endFn){ //attr属性值left/top/buttom dir正负值相反方向  target目标
+        dir = parseInt(getStyle(ele, attr)) < target ? dir : -dir; //目标值大于当前是正的 小于时是负的  getStyle(ele,attr)获取当前的值 left 或者当前的top值
+        clearInterval(ele.timer)
+        ele.timer = setInterval(function(){
+            var speed = parseInt(getStyle(ele, attr)) + dir; //每隔30秒left的偏移 dir是偏移数 数越大运动越快
+            if(speed > target && dir > 0 || speed < target && dir < 0){
+                //正数时往前跑  负数时往回跑  所以可以利用dir进一步判断
+                speed = target
+            }
+            ele.style[attr] = speed + "px";
+            if(speed == target){
+                clearInterval(ele.timer)
+                //有回调函数时执行
+                endFn && endFn();
+            }
+        }, 30)
+    }
+
+    /*设置透明度的运动---begin开始的是0 还是100  target-目标0或100*/
+    function opac(ele,begin,target,sped,endFn){ //sped速度 数字大变化快
+        ele.timer2 = setInterval(function(){
+            target == 0 ? begin-- : begin++; //目标元素是0的话就透明度要减 如果目标元是100的话 透明度就要加
+            if(begin == target){
+                clearInterval(ele.timer2)
+                endFn && endFn()
+            }
+            ele.style.opacity = begin/100;  //num 10 20 30 40 50
+            ele.style.filter='alpha(opacity='+begin+')'  //num 10 20 30 40 50
+        },sped)
+    }
+
+    function getStyle(obj,attr){
+        return obj.currentStyle ? obj.currentStyle[attr] :getComputedStyle(obj)[attr];
+    }
+
+
+    var oBg = document.getElementById('bg');
+    var oDiv = document.getElementById('div1');
+    var aLi = document.getElementsByTagName('li');
+    for(var i=0;i<aLi.length;i++){
+        aLi[i].style.left += i*60 +"px";
+    }
+
+    var flag = false;
+
+    var num = 0;
+    var timerp = null;
+    var len = aLi.length;
+    function fnBottom(endFn){
+        clearInterval(timerp);
+        timerp = setInterval(function(){
+            doMove(aLi[num],'top',20,-300,function(){
+                if(getComputedStyle(aLi[len-1]).top == '-300px'){ //如果最后一个等于300
+                    flag = true;
+                }
+            })
+            opac(aLi[num],100,0,8,function(){
+                flag = true
+            })
+            num++;
+            if(num == len){
+                endFn && endFn()
+                num = 0 //让num  等于len-1  就是最后一个
+                clearInterval(timerp)
+            }
+        },100)
+    }
+
+
+    oDiv.onclick = function(){
+        if(!flag){
+            /*数字向上*/
+            fnBottom(function(){
+              setTimeout(function(){
+                  for(var i=0;i<aLi.length;i++){
+                      aLi[i].style.top = '0';
+                      opac(aLi[i],0,100,2)
+                  }
+                  flag = false
+              },900)
+            });
+            /*宽度的0-100*/
+            doMove(oBg,'width',20,600,function(){
+                if(getStyle(oBg,'width') >= "600px"){
+                    flag = true;
+                    setTimeout(function(){
+                        doMove(oBg,'width',8000,0,function(){
+                            flag = false
+                        })
+                    },500)
+                }
+            });
+         /*透明度的*/
+            opac(oBg,0,100,8,function(){
+                setTimeout(function(){
+                    opac( oBg,100,0,8)
+                },100)
+            })
+        }
+
+    }
+
+</script>
+</body>
+</html>

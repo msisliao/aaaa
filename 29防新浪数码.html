@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{ margin:0; padding:0; }
+    ul{list-style:none}
+    #div1{ width:912px; height:330px; position:relative;margin:10px 0 0 30px; }
+    .warp{width:100%; position:relative; overflow:hidden;height: 255px;top:50px; background-color:#bfb;}
+    .warp ul{ position:absolute;left:0;top:0;white-space:nowrap;height: 300px; overflow:hidden;width:3900px;}
+    .warp ul li{width:300px;height: 250px; line-height:250px; float:left; background-color:#eee; text-align:center;border:2px solid #bfb;}
+    input{width:20px; text-align:center;}
+    input.cur{color:red;}
+    .dot{ position:absolute;top:30px;height: 30px; line-height:30px; }
+    .dot span{ display:inline-block; cursor:pointer;width:10px;height: 10px; border-radius:50%;background-color:#111; margin-right:10px;}
+    .dot span.cur{ background-color:#900;}
+</style>
+<body>
+<div id="div1">
+    <div id="btnbox"></div>
+    <!--<input type="button" value="1" class="cur"/> <input type="button" value="2"/>-->
+    <div class="tab1">
+        <p class="dot"></p>
+        <div class="warp">
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab1" style="display: none;">
+        <p class="dot"></p>
+        <div class="warp">
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab1" style="display: none;">
+        <p class="dot"></p>
+        <div class="warp">
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
+                <li>10</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getStyle(obj,attr){
+        return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj)[attr];
+    }
+    function doMove(ele,attr,dir,target,endFn){
+        dir = parseInt(getStyle(ele,attr)) < target ? dir : -dir;
+        clearInterval(ele.timer);
+        ele.timer = setInterval(function(){
+            var speed = parseInt(getStyle(ele,attr))+dir; //向前走的部数 开始的加上要走的dir
+            if(speed>target && dir>0 || speed < target && dir<0){ //大于目标点 dir是正数  或者小于目标点dir是负数 都要停止运动
+                speed = target
+            }
+            ele.style[attr] = speed + "px";
+
+            if(speed == target){
+                clearInterval(ele.timer);
+                endFn && endFn();
+            }
+        },30)
+    }
+
+    var adiv = document.getElementsByClassName('tab1');
+    var adot = document.getElementsByClassName('dot');
+    var aInput = document.getElementsByTagName('input');
+    var btnBOx = document.getElementById('btnbox');//大切换的box 有多少个div切换就显示多少啊按钮
+    var aU = document.getElementsByTagName('ul'); //获取两个tab下的ul
+    var aLiW = document.getElementsByTagName('ul')[0].getElementsByTagName('li')[0]; //获取某1个li
+    var wk = parseInt(getStyle(aLiW,'width')) +4; //获取某一个li的宽
+    var str='';
+    var all = 0; //控制数组 每组的宽  每组向左的运动
+
+
+    for(var i=0;i<adiv.length;i++){
+        str +="<input type='button' value='"+(i+1)+"'/>"; //有多少个div切换就显示多少个按钮
+    }
+    btnBOx.innerHTML = str;
+    aInput[all].className = 'cur' ;//默认第一个cur
+    var arw = []; //获取每组切换下的li 第一组9 第二组6 第三组3   [li,li,li]
+    var arwidth = [];//获取每组切换下的ul的宽度
+    var ars = []; //数组存起各组的span--小圆点 需要做它的点击事件
+    for(var w = 0; w < aU.length; w++){
+        arw.push(aU[w].getElementsByTagName('li'));//获取每组下的li
+    }
+    for(var e = 0; e < arw.length; e++){
+        for(var r = 0; r < arw[e].length; r++){ //这里取得各组的li  第一组9 第二组6....
+            aU[e].style.width = arw[e].length * wk + 'px';//每个table下的ul的宽度  就等于每组的li的个数乘以wk一个li的宽
+        }
+        arwidth.push(parseInt(aU[e].style.width));//①用数组存起每一组的ul的宽
+
+        for(var h = 0; h < arw[e].length / 3; h++){
+            adot[e].innerHTML += "<span></span>"; // 这里获取li的总个数 一组显示3个 所以length/3 即每组有多少个span 然后就滚动多少次
+        }
+        ars.push(adot[e].getElementsByTagName('span'));//获取了各组的span 第一组3个 第二2 第三组... 获得的是二维数组
+    }
+
+
+    function moves(){
+        for(var g=0;g<ars.length;g++){ //ars代表圆点span的数组 是二维
+            for(var f=0;f<ars[g].length;f++){
+                ars[g][f].index = f;
+                ars[g][f].onclick = function(){
+                    doMove(aU[all],'left',30,-912*(this.index));//这里是控制要滚动的组数 第一个all是3 第二all时2
+                    //all代表的是第一组3  第二组是2 第三组4....需要滚动的组数
+                }
+            }
+        }
+    }
+    moves()
+
+    for(var i = 0; i < adiv.length; i++){
+        aInput[i].ins = i;
+        aInput[i].onclick = function(){
+            for(var i = 0; i < adiv.length; i++){
+                adiv[i].style.display = 'none';
+                aInput[i].className = ""
+            }
+            adiv[this.ins].style.display = 'block';
+            this.className = 'cur';
+            all = this.ins;
+            moves()
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动生成100个li</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    body{ font-size:12px;}
+    input{margin:15px;padding:5px;}
+    ul{ position:relative;}
+    li{list-style:none; display:inline-block;width:50px;height: 50px; background-color:#f00;color:#fff; text-align:center; line-height:50px;margin:5px; }
+</style>
+<body>
+<input type="button" id="btn" value="自动生成100个li"/>
+<ul id="ul1">
+</ul>
+<script>
+    var oUl = document.getElementById("ul1");
+    var aLi = document.getElementsByTagName("li");
+    var oBtn = document.getElementById("btn");
+
+    var str = ''; //把要生成的内容放在一个空的字符串里面
+    oBtn.onclick = function(){
+        for(var i=0; i<100;i++){
+            str += "<li>"+i+"</li>";
+        }
+        oUl.innerHTML = str; //最后oul的内容等于这个字符串 就不用循环一次生成一次 要1000次
+    }
+
+</script>
+</body>
+</html>

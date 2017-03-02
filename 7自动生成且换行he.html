@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动生成100个li换行</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    body{ font-size:12px;}
+    input{margin:15px;padding:5px;}
+    ul{ position:relative;}
+    li{list-style:none; display:inline-block;width:50px;height: 50px; background-color:#f00;color:#fff; text-align:center; line-height:50px;margin:5px; position:absolute;}
+    div{
+        width:50px;
+        height:50px;
+        border:1px solid black;
+        font-size:20px;
+        font-weight:bold;
+        text-align:center;
+        line-height:50px;
+        position:absolute;
+        left:0px;
+        top:0px;
+    }
+
+</style>
+<body>
+<input type="button" id="btn1" value="自动生成10个li"/>
+<ul id="ul1">
+</ul>
+<!--
+<script>
+    var oUl = document.getElementById("ul1");
+    var aLi = document.getElementsByTagName("li");
+    var oBtn = document.getElementById("btn");
+    var num = 100;//总数
+    var nump = 21;//每行的个数
+    var nums = num/nump;//行数
+    var numqm = num%nump;
+    console.log(numqm)
+
+    var str = ''; //把要生成的内容放在一个空的字符串里面
+    var bg = ["red", "green", "blue", "yellow"]
+    for(var i = 0; i < 10; i++){
+        str += "<li>" + (i + 1) + "</li>";
+    }
+    oBtn.onclick = function(){
+        oUl.innerHTML = str; //最后oul的内容等于这个字符串 就不用循环一次生成一次 要1000次
+        for(var k = 0; k < aLi.length; k++){
+            aLi[k].style.left = k * 60 + "px"
+            aLi[k].style.background = bg[k % 4]
+        }
+    }
+
+</script>
+-->
+<script>
+
+    window.onload = function(){
+        var oBtn1 = document.getElementById('btn1');
+        var num = 100;//总个数
+        var nump = 10;//行个数
+        var nums = Math.ceil(num / nump); //行数
+        var str = '';
+        var arr = ['red', 'yellow', 'blue', 'green'];
+        for(var i = 0; i < num; i++){
+            str = str + '<div>' + (i + 1) + '</div>';
+        }
+        oBtn1.onclick = function(){
+            document.body.innerHTML += str;
+            var aDv = document.getElementsByTagName('div');
+            for(var s = 0; s < nums; s++){ //nums行数
+                for(var a = s * nump; a < (s + 1) * nump; a++){ //nump 行个数
+                    console.log(a)
+                        aDv[a].style.backgroundColor = arr[a % 4];
+                        aDv[a].style.left = (a % nump) * (10 + 50) + 'px';
+                        aDv[a].style.top = 40 + s * (10 + 50) + 'px';
+                }
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

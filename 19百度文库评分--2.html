@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body{ font-size:12px;}
+    span{ display:inline-block; vertical-align:middle; }
+    span em{ display:inline-block;width:20px;height: 20px; background-color:#eee;border:4px solid #fff; cursor:pointer;}
+    #info{border:1px solid #bbb;color:#aaa;}
+    #txt{color:#f00; font-weight:bold; margin-right:10px;}
+</style>
+<body>
+<div>
+    <span>总体评价:</span>
+    <span id="nums"><em></em><em></em><em></em><em></em><em></em></span>
+    <span id="txt"></span>
+    <span id="info">小提示：点击星星能进行打分</span>
+</div>
+<script>
+    var oNum = document.getElementById('nums');
+    var aEms = oNum.getElementsByTagName('em');
+    var oTxt = document.getElementById('txt');
+    var aryTxt = ['很差','较差','还行','推荐','力荐'];
+    var aInfo = document.getElementById('info');
+    var sbg;
+    var stit;
+    var boolea = true;
+
+
+    for(var i = 0; i < aEms.length; i++){
+        aEms[i].index = i;
+        aEms[i].flag = true;
+        aEms[i].onmouseover = function(){
+            var that = this;
+            aInfo.style.display = 'none';
+            oTxt.innerHTML = aryTxt[this.index];
+            fn1(aEms,null,that)
+        }
+//无任何点击时的mouseout
+        aEms[i].onmouseout = function(){
+            for(var i=0;i<aEms.length;i++){
+                aEms[i].style.background = "#eee";
+            }
+            oTxt.innerHTML = "";
+            aInfo.style.display = '';
+        }
+
+        function fn1(ele,boolea,that){
+            for(var i = 0; i < ele.length; i++){
+                if(boolea){
+                    ele[i].flag = true; //先让所有的flag为true
+                }
+                if(i <= that.index){
+                    ele[i].style.background = "#f00";
+                    if(boolea){
+                        ele[i].flag = false; //点击了哪个就让哪个之前的flag为false
+                        sbg = ele[i].style.background;
+                    }
+                    if(that.index < 2){
+                        ele[i].style.background = "#aaa";
+                        if(boolea){
+                            ele[i].flag = false;
+                            sbg = ele[i].style.background; //存储点击了的色值
+                        }
+                    }
+                } else {
+                    ele[i].style.background = "#eee";
+                }
+            }
+
+        }
+
+
+        aEms[i].onclick = function(){
+            var that = this;
+            aInfo.style.display = 'none';
+            stit = oTxt.innerHTML = aryTxt[this.index]; //让点击了的色值赋值给stt
+
+            fn1(aEms,boolea,that)
+
+            //当点击某个时的mouseout
+            for(var k=0;k<aEms.length;k++){
+                aEms[k].onmouseout = function(){
+                    oTxt.innerHTML = stit ;//鼠标离开时txt还是等于点击的那个
+                    for(var i=0;i<aEms.length;i++){
+                        if(!aEms[i].flag){//哪个是false
+                            aEms[i].style.background = sbg //哪个的颜色就等于点击的那之前
+                        }else{
+                           aEms[i].style.background = "#eee" //不是false的颜色就是默认的
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+</script>
+</body>
+</html>

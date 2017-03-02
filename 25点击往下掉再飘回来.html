@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="../课堂练习/doMove.js"></script>
+<script>
+window.onload = function(){
+    var str = '';
+    var len = 10;
+    var num = 0;
+    var timer = null;
+    var oSpan = document.getElementsByTagName('span');
+    for(var i=0;i<len;i++){
+        str+='<span style="width:50px;height: 50px;background-color: #f00;position: absolute;top:100px;left:'+i*60+'px">'+i+'</span>'
+    }
+    document.body.innerHTML = str;
+
+    var flag = true
+    function fnBottom(){
+        clearInterval(timer);
+        timer = setInterval(function(){
+            doMove(oSpan[num],'top',20,300,function(){
+                if(getComputedStyle(oSpan[len-1]).top == '300px'){ //如果最后一个等于300
+                    flag = false;
+                }
+            })
+            num++;
+            if(num == len){
+                num = len-1 //让num  等于len-1  就是最后一个
+                clearInterval(timer)
+            }
+        },100)
+    }
+    function fnTop(){
+        clearInterval(timer);
+        timer = setInterval(function(){
+            doMove(oSpan[num],'top',20,0,function(){ //这是num等于最后一个了 开始--
+                if(getComputedStyle(oSpan[0]).top == '0px'){ //如果第一个等于0 意思就是从最后走到了第一个
+                    flag = true;
+                }
+            })
+            num--;
+            if(num == -1){ //-1 就是走完了第一个
+                num = 0; //再让num等于0  后面butoom时 从0开始加加
+                clearInterval(timer)
+            }
+        },100)
+    }
+
+    document.onclick = function(){
+        if(flag){
+            fnBottom() ;
+        }else{
+            fnTop() ;
+        }
+    }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+*{margin:0;padding:0;}
+ul{list-style: none; display:flex;}
+li{ display:inline-block; flex:1; text-align:center; cursor:pointer;}
+li:hover,.cur{ background-color:#383;color:#fff;}
+#nav{ background-color:#494;height: 40px; line-height:40px;width:100%; position:relative;}
+#smallBar{ background-color:#fff;height: 40px; line-height:40px; position:absolute;top:40px;left:0;}
+#smallBar div{ background-color:#eee; display:none;}
+#smallBar a{ display:inline-block;margin:0 10px;}
+</style>
+<body>
+<div id="nav">
+    <ul id="ul1">
+        <li>首页</li>
+        <li>新闻</li>
+        <li>媒体</li>
+    </ul>
+    <div id="smallBar">
+        <div><a href="#">菜单1</a><a href="#">菜单1</a><a href="#">菜单1</a><a href="#">菜单1</a></div>
+        <div><a href="#">菜单2</a><a href="#">菜单2</a></div>
+         <div><a href="#">菜单3</a><a href="#">菜单3</a><a href="#">菜单3</a></div>
+    </div>
+</div>
+<script>
+    var oUl = document.getElementById('ul1');
+    var smallBox = document.getElementById('smallBar');
+    var aLi = oUl.getElementsByTagName('li')
+    var aMenu = smallBox.getElementsByTagName('div');
+    var timer = null;
+
+    for(var i=0;i<aLi.length;i++){
+        aLi[i].index = aMenu[i].index= i;
+        aLi[i].onmouseover =  function(){
+            for(var i=0;i<aLi.length;i++){
+                aMenu[i].style.display = 'none';
+                aLi[i].className = ''
+            }
+            aLi[this.index].className = "cur"
+            smallBox.style.left = aLi[this.index].offsetLeft+"px";
+            clearT(this.index)
+        }
+
+        aMenu[i].onmouseover = function(){
+            clearT(this.index)
+        }
+
+        aLi[i].onmouseout =  aMenu[i].onmouseout=  function(){
+            var that = this;
+           timer =  setTimeout(function(){ //函数里边this值会改变 所以先在外面声明that
+                aMenu[that.index].style.display = 'none'
+            },500)
+        }
+    }
+
+    function clearT(that){
+        clearTimeout(timer);
+        aMenu[that].style.display = 'inline-block'
+    }
+
+
+
+</script>
+<script>
+
+</script>
+
+
+</body>
+</html>

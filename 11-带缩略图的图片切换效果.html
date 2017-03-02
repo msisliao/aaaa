@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #pic{ width:800px; position:relative;margin:0 auto;}
+    #pic img{width:100%;}
+    #left,#right{ width:50%;height: 100%;left:0;top:0; position:absolute; }
+    #right{left:auto;right:0;}
+    #left em,#right em{width:100px;height: 80px; background:rgba(0,0,0,.4); display:inline-block;top:40%; position:relative;}
+    #right{ text-align:right;}
+    #left:hover em,#right:hover em{background:rgba(0,0,0,.8);}
+
+    #list{ position:absolute;bottom:0;z-index:2; width:100%; text-align:center;}
+    #list li{ display:inline-block; position:relative;width:20px;height: 20px; background-color:#00c0a5; border-radius:50%;margin:5px;}
+    #list li span{ position:absolute;width:150px;height: 80px;bottom:25px;border:2px solid #fff;left:-60px; display:none;}
+    #list li span img{max-height:100%;}
+    #list li.cur{ background-color:red;}
+</style>
+<body>
+<div id="pic">
+    <img src="" alt="">
+    <span id="left"><em></em></span>
+    <span id="right"><em></em></span>
+    <ul id="list">
+
+    </ul>
+</div>
+<script>
+    var oPic = document.getElementById("pic");
+    var oLeft = oPic.getElementsByTagName("span")[0];
+    var oRight = oPic.getElementsByTagName("span")[1];
+    var oList = document.getElementById("list");
+    var aLi = oList.getElementsByTagName("li");
+    var oImg = oPic.getElementsByTagName("img")[0];
+
+    var imgs = [
+            "img/1.jpg",
+            "img/2.jpg",
+            "img/3.jpg",
+            "img/4.jpg",
+            "img/5.jpg"
+    ]
+    var num = 0;
+
+    for(var i = 0; i < imgs.length; i++){
+        oList.innerHTML += "<li><span>" + "<img src='" + imgs[i] + "'>" + "</span></li>";
+    }
+    function showPic(){
+        oImg.src = imgs[num];
+        for(var i = 0; i < imgs.length; i++){
+            aLi[i].className = ""
+        }
+        aLi[num].className = "cur"
+    }
+    showPic()
+    oLeft.onclick = function(){
+        if(num == 0){
+            num = imgs.length;
+        }
+        num--;
+        showPic()
+    }
+    oRight.onclick = function(){
+        if(num == imgs.length - 1){
+            num = -1
+        }
+        num++
+        showPic()
+    }
+    //圆点点击事件
+    for(var i = 0; i < aLi.length; i++){
+        aLi[i].index = i;
+        aLi[i].onclick = function(){
+            num = this.index; //让num等于当前
+            for(var i = 0; i < aLi.length; i++){
+                aLi[i].className = ""
+            }
+            showPic()
+            aLi[num].className = "cur"
+        }
+    }
+    //圆点鼠标移入移除事件
+      //先找到所有的span
+    var aSpan = null;
+    var arys = [];
+    for(var i = 0; i < aLi.length; i++){
+        aSpan = aLi[i].getElementsByTagName("span");
+        for(var k = 0; k < aSpan.length; k++){
+            arys.push(aSpan[k])
+        }
+    }
+    for(var i = 0; i < aLi.length; i++){
+        aLi[i].index = i;
+        aLi[i].onmouseover = function(){
+            for(var i = 0; i < aLi.length; i++){
+                arys[i].style.display = "none"
+            }
+            arys[this.index].style.display = "block"
+        }
+        aLi[i].onmouseout = function(){
+            arys[this.index].style.display = "none"
+        }
+    }
+</script>
+</body>
+</html>

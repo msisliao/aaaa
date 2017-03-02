@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>鼠标放上去显示div 点击其它隐藏</title>
+</head>
+<style>
+    ul ul{ display:none;padding:0;}
+    li{list-style:none;}
+</style>
+<script>
+    window.onload = function(){
+        var oMenu = document.querySelector("#menu");
+        var oUl = document.querySelector("#ul1");
+        oMenu.onclick = show;
+
+        var flag = true;
+
+        function show(){
+            if(flag){
+                oUl.style.display = "block";
+                flag = false;
+            } else {
+                oUl.style.display = "none";
+                flag = true;
+            }
+        }
+    }
+</script>
+<body>
+<ul>
+    <li>
+        <a href="#" id="menu">显示隐藏</a>
+        <ul id="ul1">
+            <li>新闻</li>
+            <li>图片</li>
+            <li>网页</li>
+        </ul>
+    </li>
+</ul>
+</body>
+</html>

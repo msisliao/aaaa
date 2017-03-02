@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    #pic{ width:1000px; position:relative;margin:0 auto;}
+    #pic img{max-width:100%;}
+    .lf,#rf{width:400px; display:inline-block;}
+    #btnbox{padding:10px 0;}
+    p{ font-size:14px;}
+</style>
+<body>
+<div id="pic">
+    <div id="btnbox">
+        <input type="button" value="上一组"/>
+        <input type="button" value="下一组"/>
+    </div>
+    <div class="lf">
+        <img alt="">
+        <p>加载中</p>
+        <span>加载中</span>
+    </div>
+    <div class="lf">
+        <img alt="">
+        <p>加载中</p>
+        <span>加载中</span>
+    </div>
+<!--
+    <div id="rf" class="lf">
+        <img src="img/1.jpg" alt="">
+        <p>标题标题</p>
+        <span>1/3</span>
+    </div>
+-->
+</div>
+<script>
+    var oLf = document.querySelector(".lf");
+    var oLfimg = document.getElementById("pic").getElementsByTagName("img");
+    var oLftit = document.getElementById("pic").getElementsByTagName("p");
+    var oLfspan = document.getElementById("pic").getElementsByTagName("span");
+
+    var oImgs = [
+        ["img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg"],
+        ["img/1.jpg","img/2.jpg","img/3.jpg"]
+    ];
+    var oTits =[
+        ["标题1","标题2","标题3","标题4"],
+        ["标题1","标题2","标题3",]
+    ];
+   var num = 0;
+
+
+    var len = oImgs.length;
+
+
+
+
+        for(var i=0; i<len;i++){
+            oLfimg[i].onclick = function(){
+                this.num++;
+                if(this.num == oImgs[this.index].length){
+                    num = 0;
+                }
+                this.src = oImgs[this.index][this.num];
+                oLftit[this.index].innerHTML = oTits[this.index][num];
+                oLfspan[this.index].innerHTML = 1+(this.num) +"/"+ oImgs[this.index].length;
+            }
+
+        }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+*{margin:0;padding:0;}
+ul{list-style: none; }
+li{  text-align:center; cursor:pointer;}
+#ul1{ border-bottom:1px solid #ddd; background-color:#eee;}
+#ul1 li{ display:inline-block;padding:0 40px; line-height:40px;}
+.cur{ background-color:#383;color:#fff;}
+.box1 ul li.cur2{ background-color:#f00;color:#fff;}
+
+#warp{ width:400px; height:164px; border:1px solid #ddd; }
+.box1 ul{ float:right; background-color:#eee; height:124px;}
+.box1 ul li{ border-bottom:1px dashed #ddd; line-height:40px;width:120px;background-color:#aaa;}
+p{ text-align:center; margin-right:120px; line-height:120px;}
+</style>
+<body>
+<div id="warp">
+    <ul id="ul1">
+        <li class="cur">首页</li>
+        <li>新闻</li>
+    </ul>
+    <div id="contboxs">
+       <div class="box1">
+           <ul>
+               <li class="cur2">栏目1</li>
+               <li>栏目2</li>
+               <li>栏目3</li>
+           </ul>
+           <p>1</p>
+       </div>
+       <div class="box1" style="display: none;">
+           <ul>
+               <li>222栏目1</li>
+               <li>2222栏目2</li>
+           </ul>
+           <p></p>
+       </div>
+    </div>
+</div>
+<script>
+    var oUl = document.getElementById('ul1');
+    var aL1 = oUl.getElementsByTagName('li');
+
+    var conBox = document.getElementById('contboxs');
+    var adiv = conBox.getElementsByTagName('div');
+    var aLi = conBox.getElementsByTagName('li');
+    var aP = conBox.getElementsByTagName('p');
+
+    var aUl = conBox.getElementsByTagName('ul'); //大选项卡的ul
+
+
+    var num = 0;
+    var timer = null;
+
+var ary= []
+
+    function autoPlay(){
+        timer = setInterval(function(){
+            for(var i=0;i<aLi.length;i++){
+                aLi[i].className = ''
+            }
+            num++;
+            num%=aLi.length;
+            aLi[num].className = 'cur2';
+
+
+                        if(num>=Math.ceil(aLi.length/aL1.length)){
+                            aL1[0].className = ''
+                            aL1[1].className = 'cur'
+                            adiv[0].style.display = 'none';
+                            adiv[1].style.display = 'block';
+                            aP[1].innerHTML = num+1;
+                        }else{
+                            aL1[0].className = 'cur'
+                            aL1[1].className = ''
+                            adiv[0].style.display = 'block';
+                            adiv[1].style.display = 'none';
+                            aP[0].innerHTML = num+1;
+                        }
+        },1000)
+    }
+    autoPlay()
+</script>
+
+</body>
+</html>

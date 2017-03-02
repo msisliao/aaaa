@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    img{opacity:0; filte:alpha(opacity='0');}
+</style>
+<body>
+<img src="../img/2.jpg" width="200" alt="">
+
+<script>
+    var oImg = document.getElementsByTagName('img')[0];
+    function opac(ele,begin,target,endFn){
+        ele.timer = setInterval(function(){
+            target == 0 ? begin-- : begin++; //目标元素是0的话就透明度要减 如果目标元是100的话 透明度就要加
+            if(begin == target){
+                clearInterval(ele.timer)
+                endFn && endFn()
+            }
+            ele.style.opacity = begin/100;  //num 10 20 30 40 50
+            ele.style.filter='alpha(opacity='+begin+')'  //num 10 20 30 40 50
+        },20)
+    }
+    opac(oImg,100,0,function(){
+        opac(oImg,0,100)
+    })
+</script>
+</body>
+</html>

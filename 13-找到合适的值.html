@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>无标题文档</title>
+
+    <script>
+
+        var arr = [ '100px', 'abc'-6, [], -98765, 34, -2, 0, '300', , function(){alert(1);}, null, document, [], true, '200px'-30,'23.45元', 5, Number('abc'), function(){ alert(3); }, 'xyz'-90 ];
+
+        /*
+         1、找到arr里所有的数字：-98765, 34, -2, 0, 5
+         2、找到可以转成数字的：'100px', -98765, 34, -2, 0, '300', '23.45元',  5
+         3、把转成数字以后，最大值判断出来：300
+         4、把 NaN 所在的位置找出来：1 14 17  19
+         */
+
+        var num = [];
+        for(var i in arr){
+            if(typeof (arr[i]) == 'number' && !isNaN(arr[i])){ //检测类型是不是number  而且是数字 （不是数字的取反)
+                num.push(arr[i])
+            }
+        }
+        console.log(num)//-98765, 34, -2, 0, 5
+
+
+        var num2 = []
+        for(var i in arr){
+            if(!isNaN(parseFloat(arr[i]))){ //找到所有可以转换成数字类型的  然后不是数字类型的取反（是数字类型的）
+                num2.push(arr[i])
+            }
+        }
+        console.log(num2) //'100px', -98765, 34, -2, 0, '300', '23.45元',  5
+
+
+        var num3 = []
+        for(var i in arr){
+            if(!isNaN(parseFloat(arr[i]))){
+                num3.push(arr[i])
+            }
+        }
+        var k=0;
+        for(var i=0; i<num3.length;i++){
+            if(k<num3[i]){ //对比每个
+                k = num3[i];
+            }
+        }
+        console.log(k) //300
+
+
+//找到不是数字的位置
+        var num4 = []
+        for(var n in arr){
+            if(isNaN(arr[n])&&isNaN(parseFloat(arr[n]))){ // 检测每一个是不是nan  并且检测 是否能转成数字 取的是不能转成的
+                num4.push(n)
+            }
+        }
+        console.log(num4)
+
+    </script>
+
+</head>
+
+<body>
+</body>
+</html>

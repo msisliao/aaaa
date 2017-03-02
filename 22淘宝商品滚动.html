@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    ul li{height: 42px; border-bottom:1px solid #ccc;list-style: none;}
+    #warp{ width:400px;height: 300px;border:1px solid #ddd; overflow:hidden;margin:20px;}
+    #left,#right{ float:left; width:80px;height: 300px; background-color:#aaa;}
+    .cur{ background-color:#800;}
+    #center{ float:left;width:240px;height: 300px; background-color:#ddd; text-align:center; line-height:300px;}
+</style>
+<body>
+<div id="warp">
+    <div id="left">
+        <ul>
+            <li class="cur"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div id="center">dd</div>
+    <div id="right">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+<script>
+    var oWarp = document.getElementById('warp');
+    var cenBox = document.getElementById('center');
+    var aLi = document.getElementsByTagName('li');
+    var num = 0;
+    var timer = null;
+
+    cenBox.innerHTML = num + 1;
+    function autoPlay(){
+        timer = setInterval(function(){
+            for(var i = 0; i < aLi.length; i++){
+                aLi[i].className = ""
+            }
+            num++
+            num %= aLi.length
+            aLi[num].className = "cur";
+            cenBox.innerHTML = num + 1
+        }, 1000)
+    }
+    autoPlay()
+
+
+    for(var i = 0; i < aLi.length; i++){
+        aLi[i].index = i;
+        aLi[i].onmouseover = function(){
+            clearInterval(timer)
+            for(var i=0;i<aLi.length;i++){
+                aLi[i].className = ''
+            }
+            this.className = "cur";
+            cenBox.innerHTML = (this.index) + 1;
+            num = this.index; //从哪个离开就从哪个开始走
+        }
+        aLi[i].onmouseout= function(){
+            autoPlay()
+        }
+    }
+
+</script>
+</body>
+</html>

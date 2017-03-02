@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    img{ position:absolute;width:200px;height: 200px;}
+</style>
+<body>
+<img src="../img/1.jpg" alt="">
+<img src="../img/2.jpg" alt="">
+<img src="../img/3.jpg" alt="">
+<img src="../img/4.jpg" alt="">
+<img src="../img/5.jpg" alt="">
+<img src="../img/6.jpg" alt="">
+
+<script>
+    function shake(obj,attr,endFn){
+        var pos = parseInt(getStyle(obj,attr)); //这句是有隐患的
+        var arr = [];
+        var num = 0;
+        for(var i=20;i>0;i-=2){ //左右抖动  开始时0  20 -20 18 -18  最后到0
+            arr.push(i,-i)
+        }
+        arr.push(0)
+
+        clearInterval(obj.timer)
+        obj.timer = setInterval(function(){
+            obj.style[attr] = pos + arr[num] + "px";
+            num++;
+            if(num == arr.length){
+                clearInterval(obj.timer)
+                endFn && endFn(); //添加回调函数
+            }
+        },20)
+
+    }
+    function getStyle(obj,attr){
+        return obj.currentStyle ? obj.currentStyle[attr] :getComputedStyle(obj)[attr];
+    }
+var oImg = document.getElementsByTagName('img')
+
+    for(var i=0;i<oImg.length;i++){
+        oImg[i].style.left += i*210 +"px";
+        oImg[i].onmouseover = function(){
+            var _this = this;
+            shake(_this,'left')
+        }
+    }
+</script>
+</body>
+</html>

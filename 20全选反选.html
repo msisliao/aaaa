@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    ul{list-style:none;margin:0;padding:0;border-bottom:1px solid #ddd;}
+    li{width:100%;padding:10px 20px; margin-bottom:1px;}
+    li input{ margin-right:10px;}
+    li label{ display:block;}
+</style>
+<body>
+<ul id="ul1">
+    <li><input type="checkbox"/>1111</li>
+    <li><input type="checkbox"/>2222</li>
+    <li><input type="checkbox"/>3333</li>
+    <li><input type="checkbox"/>4444</li>
+    <li><input type="checkbox"/>5555</li>
+</ul>
+<div><input type="checkbox"  id="all"/><label for="all">全选</label></div>
+<script>
+    var oUl = document.getElementById('ul1');
+    var aLi = oUl.getElementsByTagName('li');
+    var aIput = oUl.getElementsByTagName('input');
+    var alabel = oUl.getElementsByTagName('label')[0];
+    var abtn = document.getElementById('all');
+    var bg = ["#f1fbfa","#fff4ef"];
+    for(var i=0;i<aLi.length;i++){
+        aLi[i].style.background = bg[i%2];
+    }
+
+var n=0;
+    for(var i=0;i<aIput.length;i++){
+        aIput[i].index = i;
+        aIput[i].onclick = function(){
+            if(this.checked){
+                this.parentNode.style.background = "#eee";
+                n++
+                if(n==aIput.length){
+                    abtn.checked = true
+                }
+            }else{
+                this.parentNode.style.background= bg[this.index%2]
+                n--
+                if(n!=aIput.length){
+                    abtn.checked = false
+                }
+
+            }
+        }
+
+
+    }
+
+    abtn.onclick = function(){
+        for(var i = 0; i < aIput.length; i++){
+            if(this.checked){
+                aIput[i].checked = true;
+                n++
+                aLi[i].style.background = "#eee";
+            } else {
+                aIput[i].checked = false;
+                n=0
+                aLi[i].style.background = bg[i % 2];
+            }
+        }
+    }
+
+
+
+</script>
+</body>
+</html>

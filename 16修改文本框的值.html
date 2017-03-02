@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    i,em{font-style:normal;}
+    li{border-bottom:1px solid #ddd;padding:10px 0;}
+    span{ margin-right:20px;}
+    input{ display:none;}
+    span{ display:inline-block;width:300px;}
+    .dn{ display:none;}
+    i{ display:inline-block; background-color:#eee;width:50px; text-align:center; margin-right:5px;}
+</style>
+<body>
+<ul id="ul1">
+    <li>
+        <span><em>我是商品1</em><input type="text"/></span>
+        <span><em>编辑</em><em class="dn"><i>保存</i><i>取消</i></em></span>
+    </li>
+    <li>
+        <span><em>我是商品2</em><input type="text"/></span>
+        <span><em>编辑</em><em class="dn"><i>保存</i><i>取消</i></em></span>
+    </li>
+    <li>
+        <span><em>我是商品3</em><input type="text"/></span>
+        <span><em>编辑</em><em class="dn"><i>保存</i><i>取消</i></em></span>
+    </li>
+</ul>
+<script>
+    var oUl = document.getElementById('ul1');
+    var aLi = oUl.getElementsByTagName('li');
+
+    function ados(li){
+        var em0 = li.getElementsByTagName('span')[0].getElementsByTagName('em')[0];
+        var em2 = li.getElementsByTagName('span')[1].getElementsByTagName('em')[0];
+        var aInput = li.getElementsByTagName('span')[0].getElementsByTagName('input')[0];
+        var caoz = li.getElementsByTagName('span')[1].getElementsByTagName('em')[1];
+        var save = caoz.getElementsByTagName('i')[0];
+        var cacel = caoz.getElementsByTagName('i')[1];
+        var em0TxT = em0.innerHTML;
+
+        em2.onclick = function(){
+            this.style.display = em0.style.display = 'none';
+            caoz.style.display = aInput.style.display = 'block';
+        }
+
+        save.onclick = function(){
+            var inputTxt = aInput.value;
+            close()
+            if(aInput.value == ''){
+                em0.innerHTML = em0.innerHTML
+            }else{
+                em0.innerHTML = inputTxt;
+            }
+        }
+        cacel.onclick = function(){
+            close()
+        }
+
+        function close(){
+            aInput.style.display = caoz.style.display = 'none';
+            em0.style.display = em2.style.display= 'block';
+        }
+    }
+
+    for(var i=0;i<aLi.length;i++){
+        ados(aLi[i])
+    }
+</script>
+</body>
+</html>

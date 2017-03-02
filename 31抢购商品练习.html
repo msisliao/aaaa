@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+*{margin:0;padding:0; font-size:12px;}
+.mian{height:1200px; position:relative; margin:30px; margin-top:10px;border:1px dashed #eee;}
+input{border:1px solid #ddd;padding:2px 5px; margin-bottom:5px;outline:none; width:110px;}
+.confirm{padding:3px 5px; background-color:#5cb85c;color:#fff; margin-left:5px; cursor:pointer;}
+    .pro1{width:170px;height: 270px; border:1px solid #ddd;padding:10px; position:absolute; border-radius:3px;left:0; background-color:#fff;}
+    .pro1 img{width:170px;border:1px solid #eee;}
+    .times{color:#888; margin-bottom:10px;height: 15px;}
+    em{font-style:normal}
+.protit{color:#333;}
+.proric{ margin-top:10px;color:#333;}
+.proric strong{color:#900; font-size:14px; margin-left:5px;}
+
+    .probox{ position:relative;width:192px;height: 292px;float:left; margin:10px;}
+.down{ text-align:center;height: 292px; line-height:292px; }
+    .prolist{height: 350px;}
+#xiajia{ background-color:#f5f5f5;}
+#xiajia img{ width:60px;}
+#xiajia div span{ vertical-align:top; display:inline-block; line-height:60px; margin-right:20px;}
+#xiajia div span:last-child{ font-weight:bold;color:#900}
+</style>
+
+<body>
+<div class="mian">
+    <div class="prolist">
+        <div class="probox">
+            <div class="pro1">
+                <p><input type="text" value="2017 1 15 17:00:00"/><span class="confirm">确定</span></p>
+                <p class="times"></p>
+                <div class="proinfo">
+                    <p class="proimg"><img src="../img/1.jpg" alt=""></p>
+                    <p class="protit">这是一个微波炉</p>
+                    <p class="proric"><em>抢购价</em><strong>199</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="probox">
+            <div class="pro1">
+                <p><input type="text" value="2017 1 15 16:00:00"/><span class="confirm">确定</span></p>
+                <p class="times"></p>
+                <div class="proinfo">
+                    <p class="proimg"><img src="../img/1.jpg" alt=""></p>
+                    <p class="protit">这是一个微波炉</p>
+                    <p class="proric"><em>抢购价</em><strong>199</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="xiajia"></div>
+
+</div>
+
+<script>
+      function getStyle(obj,attr){
+          return obj.currentStyle ? obj.currentStyle[attr] :getComputedStyle(obj)[attr];
+      }
+//抖动函数
+      function shake(obj,attr,endFn){
+          var pos = parseInt(getStyle(obj,attr)); //这句是有隐患的
+          var arr = [];
+          var num = 0;
+          for(var i=20;i>0;i-=2){ //左右抖动  开始时0  20 -20 18 -18  最后到0
+              arr.push(i,-i)
+          }
+          arr.push(0)
+          clearInterval(obj.timer)
+          obj.timer = setInterval(function(){
+              obj.style[attr] = pos + arr[num] + "px";
+              num++;
+              if(num == arr.length){
+                  clearInterval(obj.timer)
+                  endFn && endFn(); //添加回调函数
+              }
+          },20)
+      }
+      //运动的函数
+      function doMove(ele, attr, dir, target, endFn){ //attr属性值left/top/buttom dir正负值相反方向  target目标
+          dir = parseInt(getStyle(ele, attr)) < target ? dir : -dir; //目标值大于当前是正的 小于时是负的
+          clearInterval(ele.timer)
+          ele.timer = setInterval(function(){
+              var speed = parseInt(getStyle(ele, attr)) + dir; //每隔30秒left的偏移
+              if(speed > target && dir > 0 || speed < target && dir < 0){
+                  //正数时往前跑  负数时往回跑  所以可以利用dir进一步判断
+                  speed = target
+              }
+              ele.style[attr] = speed + "px";
+              if(speed == target){
+                  clearInterval(ele.timer)
+                  //有回调函数时执行
+                  endFn && endFn();
+              }
+          }, 30)
+      }
+      /*设置透明度的运动---begin开始的是0 还是100  target-目标0或100*/
+      function opac(ele,begin,target,sped,endFn){ //sped速度 数字大变化快
+          ele.timer = setInterval(function(){
+              target == 0 ? begin-- : begin++; //目标元素是0的话就透明度要减 如果目标元是100的话 透明度就要加
+              if(begin == target){
+                  clearInterval(ele.timer)
+                  endFn && endFn()
+              }
+              ele.style.opacity = begin/100;  //num 10 20 30 40 50
+              ele.style.filter='alpha(opacity='+begin+')'  //num 10 20 30 40 50
+          },sped)
+      }
+
+      var imgLs = document.getElementsByClassName('pro1');
+      var oBoxp = document.getElementsByClassName('probox');
+      var proIn = document.getElementsByClassName('proinfo');
+
+      var nTims = imgLs[0].getElementsByTagName('input')[0];//输入的时间
+      var oBtn = imgLs[0].getElementsByClassName('confirm');//点击开始倒计时的按钮
+      var oTims = imgLs[0].getElementsByClassName('times');//剩余时间的容器
+      var proImg1 = proIn[0].getElementsByClassName('proimg');//img
+      var proTit = proIn[0].getElementsByClassName('protit');//标题
+      var proRice = proIn[0].getElementsByClassName('proric');//价格
+
+
+      /*下架了的展示*/
+      var oBox = document.getElementById('xiajia');
+
+      var ot,nt, t,str;
+      oBtn[0].onclick = function(){
+          ot = new Date(nTims.value);
+          clearInterval(ot.timer);
+          ot.timer = setInterval(function(){
+              nt = new Date();
+              t = Math.floor((ot-nt)/1000);
+              if(ot-nt>=0){
+                  str = Math.floor(t/86400)+"天"+Math.floor(t%86400/3600)+"时"+Math.floor(t%86400%3600/60)+"分"+Math.floor(t%60)+"秒";
+                  oTims[0].innerHTML = str;
+
+              }else{
+                  clearInterval(ot.timer);
+                  shake(imgLs[0],'left',function(){
+                      doMove(imgLs[0],'top',20,330,function(){
+                          oBoxp[0].style.background = '#eee';
+                          opac(imgLs[0],100,0,0,function(){
+                              oBoxp[0].innerHTML = '<div class="down">商品已下架</div>';
+                              oBox.innerHTML +='<div><span><img src="../img/1.jpg" alt=""></span><span>这是一个微波炉</span><span>199</span></div>'
+                          });
+                      });
+                  })
+              }
+          },1000)
+
+      }
+/*
+* 还剩下总价格 然后多个列表的点击事件
+* */
+
+
+
+  </script>
+</body>
+</html>

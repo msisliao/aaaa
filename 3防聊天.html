@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户聊天</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    input{outline:none;}
+    #box{border:1px solid #ddd;margin:10px;padding:10px; background-color:#f5f5f5;height:400px; overflow-y:auto;color:#888;}
+    #box div{margin-bottom:5px; }
+    #box span{ display:inline-block;background-color:#21c618;padding:5px; border-radius:5px;color:#fff;}
+    #box div:nth-child(even){ text-align:right;}
+    #box div:nth-child(even) span{ background-color:#ded6e7;color:#000;}
+    #box div:nth-child(even) p em{ float:right; margin-top:4px;}
+    .ft{ background-color:#eee;padding:10px;margin:10px;color:#888;}
+    .ft span:first-child{ display:inline-block;width:30px; vertical-align:middle;}
+    .ft input#txt{border:0;padding:5px 10px;width:70%;}
+    .ft input:last-child{border:0; background-color:#8f4;padding:5px 18px; margin-left:10px;}
+    #box em{    font-style:normal; font-size:12px;}
+    #box img{ vertical-align:-6px; display:inline-block; margin-right:4px;}
+</style>
+<body>
+<div id="box">
+
+</div>
+<div  class="ft">
+    <span id="omgbox"></span><input type="text" id="txt" placeholder="请输入内容"/><input id="btn" type="button" value="发送"/>
+</div>
+<script>
+    var oBox = document.getElementById("box");
+    var oTxt = document.getElementById("txt");
+    var oBtn = document.getElementById("btn");
+    var ary = ["img/1.png","img/2.png","img/3.png","img/4.png","img/5.png"];
+    var num = 0;
+
+
+    var oImgBox = document.getElementById("omgbox");
+    oImgBox.innerHTML = "<img src='img/1.png' >";
+
+    oImgBox.onclick= function(){
+        num++;
+        if(num==ary.length){
+            num=0
+        }
+       this.innerHTML = "<img src='"+ary[num]+"' >"
+    }
+
+    btn.onclick = function(){
+        if(oTxt.value == ""){
+            alert("请输入内容")
+        }else {
+            oBox.innerHTML="<div><p><em>"+oImgBox.innerHTML+"</em>"+"<span>"+oTxt.value+"</span></p></div>"+oBox.innerHTML;
+        }
+    }
+</script>
+</body>
+</html>
