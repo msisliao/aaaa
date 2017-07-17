@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>titer</title>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    .box{ position:relative;}
+    img{ position:absolute;top:0;left:0;display: block;}
+</style>
+<script src="jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        /*alert($("img").length)*/
+        var Column=0;
+        fun(); /* 当打开窗口，自己先调用一次*/
+        $(window).resize(function(event) {   /*调整窗口大小*/
+            fun();
+        });
+        function fun(){
+
+            Column=parseInt($(window).width()/202);
+            /*用窗口的宽度/ 图片的宽度即可     就能算出列数来 别忘了取整*/
+            for(var i=0;i<$("img").length;i++)
+            {
+                /*$("img").eq(i).css("left",i%3*192); 让盒子的索引号 取余 * 192  可以得到每个盒子的 left值。*/
+                /* 需要一个累加器*/
+                var num=0;   /* i=9*/
+                for(var j=i-Column;j>=0;j=j-Column)  /*遍历top值*/
+                {
+                    num=num+$("img").eq(j).height()+10;
+                }
+                $("img").eq(i).stop().animate({"left":i%Column*202,"top":num},1500);
+            }
+        }
+
+    });
+</script>
+<body>
+<div class="box">
+    <img src="img/P_000.jpg" alt="" />
+    <img src="img/P_001.jpg" alt="" />
+    <img src="img/P_002.jpg" alt="" />
+    <img src="img/P_003.jpg" alt="" />
+    <img src="img/P_004.jpg" alt="" />
+    <img src="img/P_005.jpg" alt="" />
+    <img src="img/P_006.jpg" alt="" />
+    <img src="img/P_007.jpg" alt="" />
+    <img src="img/P_008.jpg" alt="" />
+    <img src="img/P_009.jpg" alt="" />
+    <img src="img/P_010.jpg" alt="" />
+    <img src="img/P_011.jpg" alt="" />
+    <img src="img/P_012.jpg" alt="" />
+    <img src="img/P_013.jpg" alt="" />
+    <img src="img/P_014.jpg" alt="" />
+    <img src="img/P_015.jpg" alt="" />
+    <img src="img/P_016.jpg" alt="" />
+    <img src="img/P_017.jpg" alt="" />
+</div>
+</body>
+</html>
