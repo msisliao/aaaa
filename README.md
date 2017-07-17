@@ -10,6 +10,8 @@
 * [点击按钮V字形四面切换](http://msisliao.github.io/demo/8v%E5%AD%97%E5%BD%A2%E9%AB%98%E7%BA%A7%E7%89%88.html)
 * [简单的模仿QQ聊天](http://msisliao.github.io/demo/3%E9%98%B2%E8%81%8A%E5%A4%A9.html)
 * [整屏滚动有动画](http://msisliao.github.io/demo/a%E6%BB%9A%E5%8A%A8%E6%97%B6%E6%9C%89%E5%8A%A8%E7%94%BB.html)
+* [上下滚动](http://msisliao.github.io/demo/21%E4%B8%8A%E4%B8%8B%E6%BB%9A%E5%8A%A8.html)
+* [抢购商品倒计时](http://msisliao.github.io/demo/31%E6%8A%A2%E8%B4%AD%E5%95%86%E5%93%81%E7%BB%83%E4%B9%A0.html)
 
 持续更新....
 
