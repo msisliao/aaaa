@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务列表</title>
+    <script src="js/vue.js"></script>
+    <style>
+        #app{margin:100px; }
+        input[type='text']{border:1px solid #ddd;padding:6px 10px;outline:0;}
+        input[type='checkbox']{ vertical-align:-2px;}
+        button{ background-color:#25b26e;color:#fff;border:0;outline:0;padding:5px 14px;}
+        .list{padding:10px 0; font-size:12px;}
+        .unit{ border-bottom:1px solid #eee;padding:10px 0;}
+        span{ margin-right:20px;}
+        em{ background-color:#f84462;font-style:normal;padding:0 2px; border-radius:2px;color:#fff; cursor:pointer;}
+        .empty{padding:20px;color:#aaa; font-size:12px;}
+        .finish{color:#888;text-decoration:line-through;}
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--v-model="task.content" 用v-model来绑定了task.content的内容 -->
+    <input type="text" placeholder="开始创建任务" @keydown.enter="addTask" v-model="task.content"/> <button @click="addTask">确定</button>
+    <div class="list">
+        <div class="unit" v-for="(item,index) in list">
+          <input type="checkbox" @click="changeState(index)" :checked="item.finished" /> <span :class="{'finish':item.finished }"> <!--动态修改class true时代表勾选class为finish-->
+            {{index+1}}、{{item.content}}</span>
+            <em @click="removeTask">delete</em>
+        </div>
+        <!--当我们的list[ ]数组的长度为0的时候，表示无任务，可展示“暂无任务”，反之则不渲染。-->
+        <p v-if="list.length==0" class="empty">暂无任务</p>
+    </div>
+</div>
+<script>
+    /*1、首先创建实例
+    2、设计关于任务的数据结构，包括(任务内容、任务是否完成、是否删除)
+    3、按下enter键表示完成输入。所以，我们要实现监听键盘事件。@keydown.enter
+    4、编写addTask( )方法，实现将用户输入的内容存储起来，因为我们在之前就通过 v-model l将用户输入的内容和task中的content关联起来，所以我们只需要把task.content存储起来就可以了，存在哪里呢？我们用一个数组list[ ]来存储它们
+    *
+    * */
+  const app = new Vue({
+      el:'#app',
+      data:{
+          task:{
+              content:'',
+              finished:false,
+              deleted:false
+          },
+          //任务列表
+          list:[]
+      },
+      methods:{
+          //创建任务
+          addTask(){
+              //将任务存入list数组
+              this.list.push(this.task);
+              //存入list[]后，重置task
+              this.task={
+                  content:'',
+                  finished : false,
+                  deleted:false
+              }
+          },
+          /*index代表当前添加任务的位置*/
+          changeState(index){
+              let curState = this.list[index].finished //Boolean值
+              this.list[index].finished = !curState
+          },
+          removeTask(index){
+              //使用splice操作删除数组指定项 参数1：要删除的元素位置 参数二：删除的个数
+              this.list.splice(index,1)
+          }
+      }
+  })
+</script>
+</body>
+</html>
